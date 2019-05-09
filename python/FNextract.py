@@ -11,14 +11,23 @@ get_ipython().magic('reset -sf')
 
 #import packages
 import xml.etree.ElementTree as ET
-import glob
 import errno
+import os
+import os.path
 
-target = 'displacementVectors'
-#target = 'fracNodes'
+#target = 'displacementVectors'
+target = 'fracNodes'
 
-fpath_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress/*.xml'
-files = glob.glob(fpath_in)
+files = []
+start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random'
+pattern   = "*.xml"
+
+for dirpath, dirnames, filenames in os.walk(start_dir):
+    for filename in [f for f in filenames if f.endswith(".xml")]:
+        files.extend([os.path.join(dirpath, filename)])
+
+#fpath_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/unconfined/*.xml'
+#files = glob.glob(fpath_in)
 
 min_x = -0.25
 max_x = 0.25
