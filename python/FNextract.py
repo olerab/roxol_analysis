@@ -15,15 +15,15 @@ import errno
 import os
 import os.path
 
-target = 'displacementVectors'
-#target = 'fracNodes'
+#target = 'displacementVectors'
+target = 'fracNodes'
 
 files = []
-start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned'
-pattern   = "*.xml"
+start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/test'
+pattern   = ".xml"
 
 for dirpath, dirnames, filenames in os.walk(start_dir):
-    for filename in [f for f in filenames if f.endswith(".xml")]:
+    for filename in [f for f in filenames if f.endswith(pattern)]:
         files.extend([os.path.join(dirpath, filename)])
 
 #fpath_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/unconfined/*.xml'
@@ -84,40 +84,4 @@ for name in files:
 
 
 
-
-#fname_in = 'simulatorResult_0.xml'
-
-#fpath_out = fpath_in
-#fname_out = fname_in[:-4] + '.txt'
-
-#file_in = fpath_in + fname_in
-#file_out = fpath_out + fname_out
-
-
-
-
-#playing around with the hierarchial XML data
-
-
-
-# display attributes of each crack
-#for crack in root.iter('crack'):
- #   print(crack.attrib)
-
-#for crackResults in root.iter('crackResults'):
-#    print(crackResults.get('nrCracks'))
-
-
-# use xpath expressions to navigate to the cracks, then print the coordinate subelement for all cracks
-#for crack in root.findall("./results/crackResults/crack"):
-#    print(coordinates.text)
-    
-# 
-# find number of cracks and loop through all cracks to display crack node coordinates
-
-#for i in range(numcracks):
-#    print(crackResults[i][0].text)
-    
-    
-# write nodes for each crack into new variable tand use it to write FN node file
     
