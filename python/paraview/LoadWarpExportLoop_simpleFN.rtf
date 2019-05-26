@@ -1,0 +1,575 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red51\green110\blue109;\red0\green0\blue0;\red15\green112\blue1;
+\red0\green0\blue255;\red83\green83\blue83;\red170\green13\blue145;\red255\green255\blue255;\red0\green0\blue0;
+\red28\green0\blue207;\red0\green116\blue0;\red169\green14\blue26;}
+{\*\expandedcolortbl;;\cssrgb\c25098\c50196\c50196;\cssrgb\c0\c0\c0;\cssrgb\c0\c50196\c0;
+\cssrgb\c0\c0\c100000;\cssrgb\c40000\c40000\c40000;\csgenericrgb\c66500\c5200\c56900;\csgray\c100000;\csgenericrgb\c0\c0\c0;
+\csgenericrgb\c11000\c0\c81000;\csgenericrgb\c0\c45600\c0;\cssrgb\c72941\c12941\c12941;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14440\viewh13140\viewkind0
+\deftab720
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0\fs24 \cf2 \expnd0\expndtw0\kerning0
+# trace generated using paraview version 5.6.0
+\f1 \cf3 \
+
+\f0 \cf2 #
+\f1 \cf3 \
+
+\f0 \cf2 # To ensure correct image size when batch processing, please search 
+\f1 \cf3 \
+
+\f0 \cf2 # for and uncomment the line `# renderView*.ViewSize = [*,*]`
+\f1 \cf3 \
+
+\f0 \cf2 \
+#### import the simple module from the paraview
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf4 from\cf3  \cf5 paraview.simple\cf3  \cf4 import\cf3  \cf6 *
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf2 #### disable automatic camera reset on 'Show'\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf7 \cb8 \kerning1\expnd0\expndtw0 Import glob
+\f0\fs24 \cf2 \cb1 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \
+\
+# get correct file name lists\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf9 \cb8 \kerning1\expnd0\expndtw0 fpath_in= \cf10 \cb8 'E:\\\\OLE\\\\roxol\\\\RESULTS\\\\90deg_random\\\\unconfined\\\\'\
+
+\f0\fs24 \cf6 \cb1 \expnd0\expndtw0\kerning0
+\
+
+\f2\fs22 \cf9 \cb8 \kerning1\expnd0\expndtw0 vtuFiles
+\f0\fs24 \cf6 \cb1 \expnd0\expndtw0\kerning0
+ = 
+\f2\fs22 \cf9 \cb8 \kerning1\expnd0\expndtw0 glob.glob(fpath_in + \cf10 \cb8 '*.vtk'\cf9 \cb8 )
+\f3\fs24 \cf0 \cb8 \
+
+\f2\fs22 \cf9 \cb8 vtuFiles = glob.glob(fpath_in + \cf10 \cb8 '*.vtu'\cf9 \cb8 )
+\f0\fs24 \cf2 \cb1 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf11 \cb8 \kerning1\expnd0\expndtw0 # output files specs
+\f3\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf9 \cb8 fpath_out = \cf10 \cb8 'E:\\\\OLE\\\\roxol\\\\RESULTS\\\\plots\\\\90deg_random\\\\unconfined\\\\animations\\\\simple_network\\\\'
+\f3\fs24 \cf0 \cb8 \
+
+\f2\fs22 \cf9 \cb8 fname_out = fpath_out + \cf10 \cb8 'FN_result.png'
+\f0\fs24 \cf2 \cb1 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \
+
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 paraview\cf6 .\cf3 simple\cf6 .\cf3 _DisableFirstRenderCameraReset()
+\f1 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf9 \cb8 \kerning1\expnd0\expndtw0 ResetSession()
+\f0\fs24 \cf3 \cb1 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf3 \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # create a new 'XML Unstructured Grid Reader'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResults_ \cf6 =\cf3  XMLUnstructuredGridReader(FileName\cf6 =
+\f2\fs22 \cf9 \cb8 \kerning1\expnd0\expndtw0 vtuFiles
+\f0\fs24 \cf3 \cb1 \expnd0\expndtw0\kerning0
+)
+\f1 \
+
+\f0 simulatorResults_\cf6 .\cf3 CellArrayStatus \cf6 =\cf3  [\cf12 'element_displacement_$vector_$createComponentsAsScalar'\cf3 , \cf12 'element_strain_3esd_$createComponentsAsScalar'\cf3 , \cf12 'element_stress_3esd_$createComponentsAsScalar'\cf3 , \cf12 'element_principalStress_$vector_$createComponentsAsScalar'\cf3 , \cf12 'element_heaviside_$scalar'\cf3 , \cf12 'element_radialStress_$scalar'\cf3 , \cf12 'element_tangentialStress_$scalar'\cf3 , \cf12 'element_shearStress_$scalar'\cf3 , \cf12 'element_radialDisplacement_$scalar'\cf3 , \cf12 'element_tangentialDisplacement_$scalar'\cf3 , \cf12 'element_S1S3Quotient_$scalar'\cf3 , \cf12 'element_3S1minusS3_$scalar'\cf3 , \cf12 'element_3S3minusS1_$scalar'\cf3 , \cf12 'element_principalStress2d_$createComponentsAsScalar'\cf3 , \cf12 'element_elasticShearEnergyDensity_$scalar'\cf3 , \cf12 'element_porePressure_$scalar'\cf3 , \cf12 'element_porePressureGradient_$vector_$createComponentsAsScalar'\cf3 , \cf12 'element_fluidVolumeFlow_$vector_$createComponentsAsScalar'\cf3 , \cf12 'element_lastPrincipalDirection_$vector'\cf3 , \cf12 'element_material_ids_$scalar'\cf3 ]
+\f1 \
+
+\f0 simulatorResults_\cf6 .\cf3 PointArrayStatus \cf6 =\cf3  [\cf12 'node_displacement_$vector_$createComponentsAsScalar'\cf3 , \cf12 'node_strain_3esd_$createComponentsAsScalar'\cf3 , \cf12 'node_stress_3esd_$createComponentsAsScalar'\cf3 , \cf12 'node_radialDisplacement_$scalar'\cf3 , \cf12 'node_tangentialDisplacement_$scalar'\cf3 , \cf12 'node_cylindrical_stress_$createComponentsAsScalar'\cf3 , \cf12 'node_principalStrains_$createComponentsAsScalar'\cf3 , \cf12 'node_principalStress_$createComponentsAsScalar'\cf3 , \cf12 'node_totalDisplacement_$scalar'\cf3 , \cf12 'node_maximumShearStress_$scalar'\cf3 , \cf12 'node_totalElasticStrainEnergy_$scalar'\cf3 , \cf12 'node_volumetricStrainEnergy_$scalar'\cf3 , \cf12 'node_deviatoricStrainEnergy_$scalar'\cf3 , \cf12 'node_levelsets_phi_$createComponentsAsScalar'\cf3 , \cf12 'node_enrichment_$createComponentsAsScalar'\cf3 , \cf12 'node_porePressure_$scalar'\cf3 , \cf12 'node_porePressureGradient_$vector_$createComponentsAsScalar'\cf3 , \cf12 'node_fluidVolumeFlow_$vector_$createComponentsAsScalar'\cf3 , \cf12 'node_averageSubResultDeviation_$scalar'\cf3 , \cf12 'node_maximalSubResultDeviation_$scalar'\cf3 ]
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # get animation scene
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 animationScene1 \cf6 =\cf3  GetAnimationScene()
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # update animation scene based on data timesteps
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 animationScene1\cf6 .\cf3 UpdateAnimationUsingDataTimeSteps()
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # create a new 'Legacy VTK Reader'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResultsGeometry_ \cf6 =\cf3  LegacyVTKReader(FileNames\cf6 =
+\f2\fs22 \cf9 \cb8 \kerning1\expnd0\expndtw0 vtkFiles
+\f0\fs24 \cf3 \cb1 \expnd0\expndtw0\kerning0
+)
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # set active source
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 SetActiveSource(simulatorResults_)
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # get active view
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 renderView1 \cf6 =\cf3  GetActiveViewOrCreate(\cf12 'RenderView'\cf3 )
+\f1 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf2 # uncomment following to set a specific view size
+\f1 \cf3 \
+
+\f0 \cf2 # renderView1.ViewSize = [1830, 1166]
+\f1 \cf3 \
+
+\f0 \cf2 \
+# show data in view
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResults_Display \cf6 =\cf3  Show(simulatorResults_, renderView1)
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # trace defaults for the display properties.
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResults_Display\cf6 .\cf3 Representation \cf6 =\cf3  \cf12 'Surface'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 ColorArrayName \cf6 =\cf3  [\cf4 None\cf3 , \cf12 ''\cf3 ]
+\f1 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 OSPRayScaleArray \cf6 =\cf3  \cf12 'node_averageSubResultDeviation_$scalar'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 OSPRayScaleFunction \cf6 =\cf3  \cf12 'PiecewiseFunction'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 SelectOrientationVectors \cf6 =\cf3  \cf12 'None'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 ScaleFactor \cf6 =\cf3  \cf6 0.05
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 SelectScaleArray \cf6 =\cf3  \cf12 'None'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 GlyphType \cf6 =\cf3  \cf12 'Arrow'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 GlyphTableIndexArray \cf6 =\cf3  \cf12 'None'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 GaussianRadius \cf6 =\cf3  \cf6 0.0025
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 SetScaleArray \cf6 =\cf3  [\cf12 'POINTS'\cf3 , \cf12 'node_averageSubResultDeviation_$scalar'\cf3 ]
+\f1 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 ScaleTransferFunction \cf6 =\cf3  \cf12 'PiecewiseFunction'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 OpacityArray \cf6 =\cf3  [\cf12 'POINTS'\cf3 , \cf12 'node_averageSubResultDeviation_$scalar'\cf3 ]
+\f1 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 OpacityTransferFunction \cf6 =\cf3  \cf12 'PiecewiseFunction'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 DataAxesGrid \cf6 =\cf3  \cf12 'GridAxesRepresentation'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 SelectionCellLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 SelectionPointLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 PolarAxes \cf6 =\cf3  \cf12 'PolarAxesRepresentation'
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 ScalarOpacityUnitDistance \cf6 =\cf3  \cf6 0.013800087806205617
+\f1 \cf3 \
+
+\f0 \cf6 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # init the 'GridAxesRepresentation' selected for 'DataAxesGrid'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResults_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 XTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 YTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 ZTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 XLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 YLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 ZLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf12 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # init the 'PolarAxesRepresentation' selected for 'PolarAxes'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResults_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 PolarAxisTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 PolarAxisLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 LastRadialAxisTextFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResults_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 SecondaryRadialAxesTextFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf12 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # reset view to fit data
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 renderView1\cf6 .\cf3 ResetCamera()
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # set active source
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 SetActiveSource(simulatorResultsGeometry_)
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # show data in view
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResultsGeometry_Display \cf6 =\cf3  Show(simulatorResultsGeometry_, renderView1)
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # get color transfer function/color map for 'fluidPressure'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 fluidPressureLUT \cf6 =\cf3  GetColorTransferFunction(\cf12 'fluidPressure'\cf3 )
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # trace defaults for the display properties.
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResultsGeometry_Display\cf6 .\cf3 Representation \cf6 =\cf3  \cf12 'Surface'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 ColorArrayName \cf6 =\cf3  [\cf12 'POINTS'\cf3 , \cf12 'fluidPressure'\cf3 ]
+\f1 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 LookupTable \cf6 =\cf3  fluidPressureLUT
+\f1 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 OSPRayScaleArray \cf6 =\cf3  \cf12 'fluidPressure'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 OSPRayScaleFunction \cf6 =\cf3  \cf12 'PiecewiseFunction'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 SelectOrientationVectors \cf6 =\cf3  \cf12 'fluidPressureGradient'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 ScaleFactor \cf6 =\cf3  \cf6 0.05
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 SelectScaleArray \cf6 =\cf3  \cf12 'fluidPressure'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 GlyphType \cf6 =\cf3  \cf12 'Arrow'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 GlyphTableIndexArray \cf6 =\cf3  \cf12 'fluidPressure'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 GaussianRadius \cf6 =\cf3  \cf6 0.0025
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 SetScaleArray \cf6 =\cf3  [\cf12 'POINTS'\cf3 , \cf12 'fluidPressure'\cf3 ]
+\f1 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 ScaleTransferFunction \cf6 =\cf3  \cf12 'PiecewiseFunction'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 OpacityArray \cf6 =\cf3  [\cf12 'POINTS'\cf3 , \cf12 'fluidPressure'\cf3 ]
+\f1 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 OpacityTransferFunction \cf6 =\cf3  \cf12 'PiecewiseFunction'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 DataAxesGrid \cf6 =\cf3  \cf12 'GridAxesRepresentation'
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 SelectionCellLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 SelectionPointLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 PolarAxes \cf6 =\cf3  \cf12 'PolarAxesRepresentation'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf12 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # init the 'GridAxesRepresentation' selected for 'DataAxesGrid'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResultsGeometry_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 XTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 YTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 ZTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 XLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 YLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 DataAxesGrid\cf6 .\cf3 ZLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf12 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # init the 'PolarAxesRepresentation' selected for 'PolarAxes'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResultsGeometry_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 PolarAxisTitleFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 PolarAxisLabelFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 LastRadialAxisTextFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+
+\f0 simulatorResultsGeometry_Display\cf6 .\cf3 PolarAxes\cf6 .\cf3 SecondaryRadialAxesTextFontFile \cf6 =\cf3  \cf12 ''
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf12 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # show color bar/color legend
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResultsGeometry_Display\cf6 .\cf3 SetScalarBarVisibility(renderView1, \cf4 True\cf3 )
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # get opacity transfer function/opacity map for 'fluidPressure'
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 fluidPressurePWF \cf6 =\cf3  GetOpacityTransferFunction(\cf12 'fluidPressure'\cf3 )
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # Properties modified on renderView1
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 renderView1\cf6 .\cf3 OrientationAxesVisibility \cf6 =\cf3  \cf6 0
+\f1 \cf3 \
+
+\f0 \cf6 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # get the material library
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 materialLibrary1 \cf6 =\cf3  GetMaterialLibrary()
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # Properties modified on renderView1
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 renderView1\cf6 .\cf3 OrientationAxesVisibility \cf6 =\cf3  \cf6 1
+\f1 \cf3 \
+
+\f0 \cf6 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # turn off scalar coloring
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 ColorBy(simulatorResultsGeometry_Display, \cf4 None\cf3 )
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # Hide the scalar bar for this color map if no visible data is colored by it.
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 HideScalarBarIfNotNeeded(fluidPressureLUT, renderView1)
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # change solid color
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 simulatorResultsGeometry_Display\cf6 .\cf3 DiffuseColor \cf6 =\cf3  [\cf6 0.0\cf3 , \cf6 0.0\cf3 , \cf6 0.0\cf3 ]
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # set active source
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 SetActiveSource(simulatorResults_)
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # Properties modified on renderView1
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 renderView1\cf6 .\cf3 OrientationAxesVisibility \cf6 =\cf3  \cf6 0
+\f1 \cf3 \
+
+\f0 \cf6 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # current camera placement for renderView1
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 renderView1\cf6 .\cf3 InteractionMode \cf6 =\cf3  \cf12 '2D'
+\f1 \cf3 \
+
+\f0 renderView1\cf6 .\cf3 CameraPosition \cf6 =\cf3  [\cf6 0.0\cf3 , \cf6 0.0\cf3 , \cf6 1.3660254037844388\cf3 ]
+\f1 \
+
+\f0 renderView1\cf6 .\cf3 CameraParallelScale \cf6 =\cf3  \cf6 0.2414817229651483
+\f1 \cf3 \
+
+\f0 \cf6 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 # save animation
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 SaveAnimation(
+\f2\fs22 \cf9 \cb8 \kerning1\expnd0\expndtw0 fname_out
+\f0\fs24 \cf3 \cb1 \expnd0\expndtw0\kerning0
+, renderView1, ImageResolution\cf6 =\cf3 [\cf6 1830\cf3 , \cf6 1166\cf3 ],
+\f1 \
+
+\f0     TransparentBackground\cf6 =1\cf3 ,
+\f1 \
+
+\f0     FrameWindow\cf6 =\cf3 [\cf6 0\cf3 , \cf6 56\cf3 ])
+\f1 \
+
+\f0 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 #### saving camera placements for all active views
+\f1 \cf3 \
+
+\f0 \cf2 \
+# current camera placement for renderView1
+\f1 \cf3 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0 \cf3 renderView1\cf6 .\cf3 InteractionMode \cf6 =\cf3  \cf12 '2D'
+\f1 \cf3 \
+
+\f0 renderView1\cf6 .\cf3 CameraPosition \cf6 =\cf3  [\cf6 0.0\cf3 , \cf6 0.0\cf3 , \cf6 1.3660254037844388\cf3 ]
+\f1 \
+
+\f0 renderView1\cf6 .\cf3 CameraParallelScale \cf6 =\cf3  \cf6 0.2414817229651483
+\f1 \cf3 \
+
+\f0 \cf6 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 #### uncomment the following to render all views
+\f1 \cf3 \
+
+\f0 \cf2 # RenderAllViews()
+\f1 \cf3 \
+
+\f0 \cf2 # alternatively, if you want to write images, you can use SaveScreenshot(...).
+\f1 \cf3 \
+}
