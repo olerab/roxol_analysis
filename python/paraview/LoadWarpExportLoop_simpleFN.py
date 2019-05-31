@@ -9,10 +9,12 @@ from paraview.simple import *
 import glob
 
 
-all_paths_in = ['/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/compressional/1perc/']
-all_paths_out = ['/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/90deg_random/compressional/1perc/']
+all_paths_in = ['/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/unconfined/']
+all_paths_out = ['/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/90deg_random/unconfined/']
 
-numResults = 75
+# define result file range to be plotted
+startResult = 0
+endResult = 74
 
 if len(all_paths_in) != len(all_paths_out):
 	print('ERROR! path list for input and output files needs to be same length')
@@ -181,7 +183,7 @@ for i in range(0,len(all_paths_in)):
 	# save animation
 	SaveAnimation(fname_out, renderView1, ImageResolution=[1830, 1166],
 	    TransparentBackground=1,
-	    FrameWindow=[0, numResults])
+	    FrameWindow=[startResult, endResult])
 	
 	#### saving camera placements for all active views
 	

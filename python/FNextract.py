@@ -15,11 +15,11 @@ import errno
 import os
 import os.path
 
-#target = 'displacementVectors'
-target = 'fracNodes'
+target = 'displacementVectors'
+#target = 'fracNodes'
 
 files = []
-start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/test'
+start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned/extensional/10perc'
 pattern   = ".xml"
 
 for dirpath, dirnames, filenames in os.walk(start_dir):

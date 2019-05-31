@@ -7,6 +7,7 @@ Created on Thu May  9 10:27:20 2019
 """
 import matplotlib.pyplot as plt
 from FracArea import *
+from FracOrientation import *
 
 def main():
     """ INSERT DESCRIPTION HERE"""
@@ -50,8 +51,9 @@ def main():
     
     return frac_area
 
-    
-    
+# frac angles
+path_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/compressional/10perc/'
+FracOrientation(path_in)
     
 if __name__ == "__main__":
     main()

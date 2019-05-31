@@ -13,10 +13,10 @@ clear all;
 %close all;
 
 % specify path names
-path_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/90deg_random/compressional/1perc/animations/simple_network/';
-pathnames = dir([path_in '*.png']);
+path_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/15deg_aligned/extensional/5perc/animations/simple_network/';
+pathnames = dir([path_in 'FN_*.png']);
 path_out = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/plot_data/longest_connected_path/';
-filename_out = [path_out '90deg_random_compressional_1perc.txt'];
+filename_out = [path_out '15deg_aligned_extensional_5perc.txt'];
 
 savefile = 1; %1 if result data should be written to a ASCII file
 
@@ -25,7 +25,7 @@ pixels = 1166; % length of image
 domainsize = 0.5; % in meters
 pxl_per_meter = 1166/0.5; % conversion factor
 
-startidx = 2; %index of first filename within pathnames structure, seems to be 2...
+startidx = 1; %index of first filename within pathnames structure
 longest_con_fracpath = NaN(length(pathnames)-startidx,1);
 all_fracs = NaN(length(pathnames)-startidx,1);
 
@@ -54,7 +54,7 @@ imshow(BW)
 % convert longest connected fracture path form pixels to meters
 longest_con_fracpath_meters = longest_con_fracpath./pxl_per_meter;
 all_fracs_meters = all_fracs./pxl_per_meter;
-
+longest_con_fracpath_meters_normbytotal = longest_con_fracpath_meters./all_fracs_meters;
 % plot for QC
 figure()
 plot(longest_con_fracpath_meters)
@@ -66,7 +66,7 @@ plot(longest_con_fracpath_meters./all_fracs_meters)
 
 % save to file
 if savefile == 1
-    dlmwrite(filename_out,longest_con_fracpath_meters)
+    dlmwrite(filename_out,[all_fracs_meters, longest_con_fracpath_meters, longest_con_fracpath_meters_normbytotal])
 end
 
 
