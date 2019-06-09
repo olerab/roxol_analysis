@@ -16,7 +16,7 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 
-target = 'porepressure'
+target = 'fluildVolumeFlow'#'porepressure'
 # define realistic maximum and minimum to avoid numerical outliers skewing the result
 target_max = 8e+7
 target_min = 0
@@ -26,8 +26,12 @@ start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress'
 pattern   = ".xml"
 
 
+
 if target == 'porepressure':
     target_idx = 16
+    
+elif target == 'fluildVolumeFlow':
+    target_idx = 18
 
 fpath = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress/*xml'
 files = glob.glob(fpath)

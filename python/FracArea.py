@@ -15,7 +15,7 @@ def SegmentLength(x1,x2,y1,y2):
     return np.sqrt((x2-x1)**2 + (y2-y1)**2)
 
 
-def FracArea(fpath_in_fracNodes, fpath_in_dispVec, plotting = False, norm_by_len = True):    
+def FracArea(fpath_in_fracNodes, fpath_in_dispVec, plotting = False, norm_by_len = False):    
     """
     Created on Tue May  7 15:22:48 2019
     
