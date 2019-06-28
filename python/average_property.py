@@ -37,6 +37,7 @@ fpath = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress/*xml'
 files = glob.glob(fpath)
 
 avgprop = np.zeros([len(files),])
+sumprop = avgprop
 cnt = 0
 for name in files:
     try:
@@ -51,6 +52,7 @@ for name in files:
         #prop = np.where(prop>target_max, np.nan, prop)
         prop = np.where(prop<target_min, np.nan, prop)
         avgprop[cnt] = np.nanmean(prop)/nrNodes
+        sumprop[cnt] = np.nansum(prop)
         cnt += 1
         
     except IOError as exc:

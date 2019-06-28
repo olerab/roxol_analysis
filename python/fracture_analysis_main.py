@@ -19,17 +19,19 @@ def main():
     """ INSERT DESCRIPTION HERE"""
     
     #insert all relevant paths
-#    paths =['/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/extensional/10perc/',
-#            '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress/',
-#            '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/compressional/10perc/']
-     
-    paths =['/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress/',
+    paths =['/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/extensional/10perc/',
             '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/extensional/5perc/',
-            '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/extensional/10perc/']
+            '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress/']
+     
+#    paths =['/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/isostress/',
+#            '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/extensional/5perc/',
+#            '/Volumes/PVPLAB2/OLE/roxol/RESULTS/90deg_random/extensional/10perc/']
 
     
-    fpath_out = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/'
-    fname_out = 'plots_90deg_iso.png'
+
+    
+    
+    
     # prepare data dicts
     frac_area = {}
     frac_length = {}
@@ -54,21 +56,46 @@ if __name__ == "__main__":
     
     
     # -------------------- plot total frac areas for all experiments
+    save_figs = True
+    fpath_out = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/'
+    fname_out_len = 'TotalLength_RandomOrientation_Aniso.pdf'
+    fname_out_area = 'TotalArea_AllOrientations_Aniso.pdf'
+    fname_out_ang = 'MedianAngles_AllOrientations_Aniso.pdf'
     
-    leg = ['10 percent extensional','isotropic','10 percent compressional']
-    fig = plt.figure(figsize=(15,7))
-    ax = fig.add_subplot(111)
-    ax2 = ax.twinx()
+    
+    leg = ['random, 10 % extensional','random, 5 % extensional','random, isotropic']
+    colors = ['blue', 'red', 'black']
+    markers = ['o', 'P', 'd']
+    figsizex_cm = 6.8
+    figsizey_cm = 4
+    
+    fig1 = plt.figure(figsize=(figsizex_cm,figsizey_cm))
+    ax1 = fig1.add_subplot(111)
     for i in range(0,len(frac_area)):
-        line, = ax.plot(frac_area[i], lw=2, marker='o')
-        ax.set_xlabel("Simulation Step", fontsize=18)
-        ax.set_ylabel("Total Fracture Area", fontsize=18)
-        line2, = ax2.plot(frac_length[i], lw=2, marker='o', alpha = .5)
+        ax1.set_xlabel("Computation Step", fontsize=12)
+        ax1.set_ylabel("Total Fracture Length ($m$)", fontsize=12)
+        line = ax1.plot(frac_length[i], lw=1, marker=markers[i], color = colors[i], markevery=2)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
         plt.grid(True)
-        ax.legend(leg, loc='upper left')
+        ax1.legend(leg, loc='bottom right')
     plt.show()
-    #fig.savefig(fpath_out + fname_out)
+    if save_figs == True:
+        fig1.savefig(fpath_out+fname_out_len)
+    
+    
+    
+    fig2 = plt.figure(figsize=(figsizex_cm,figsizey_cm))
+    ax2 = fig2.add_subplot(111)
+    for i in range(0,len(frac_area)):
+        line2 = ax2.plot(frac_area[i], lw=1, marker=markers[i], color = colors[i], markevery=1)
+        ax2.set_xlabel("Computation Step", fontsize=12)
+        ax2.set_ylabel("Total Fracture Area ($m^2$)", fontsize=12)
+        plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+        plt.grid(True)
+        ax2.legend(leg, loc='upper right')
+    plt.show()
+    if save_figs == True:
+        fig2.savefig(fpath_out+fname_out_area)
     
     
 
@@ -77,7 +104,7 @@ if __name__ == "__main__":
     frac_spacing_init = 0.08
     
     
-    fig2, axs = plt.subplots(nrows=1, ncols=1, sharex=True, figsize=(15,7))
+    fig3, axs = plt.subplots(nrows=1, ncols=1, sharex=True, figsize=(figsizex_cm,figsizey_cm))
     for i in range(0,len(segment_angle_data)):
         # Now switch to a more OO interface to exercise more features.
         
@@ -87,11 +114,12 @@ if __name__ == "__main__":
         avg_err_seg[pump_ids[0]] = avg_err_seg[pump_ids[0]-1] 
         
         frac_len_by_spacing = [x / frac_spacing_init for x in frac_length[i]]
-        #axs.errorbar(frac_len_by_spacing[1:], avg_err_seg[1:,0], yerr=avg_err_seg[1:,1], fmt='o')
-        axs.plot(frac_len_by_spacing[:], avg_err_seg[:,0], lw=2, marker='o')
-        #axs.set_title(path_in[35:], fontsize=18)
-        axs.set_xlabel('$L/D_{init}$', fontsize=16)
-        axs.set_ylabel("Median angle from horizontal (deg)", fontsize=16)
+        axs.plot(frac_len_by_spacing[:], avg_err_seg[:,2], lw=1, marker=markers[i], color = colors[i], linestyle = '-', markevery=1)
+        axs.set_xlabel('L/D$_{init}$', fontsize=12)
+        axs.set_ylabel("Median propagation angle (deg)", fontsize=12)
+        plt.grid(True)
         axs.set_ylim([0, 90])
-        axs.legend(leg, loc='upper left')
+        axs.legend(leg, loc='lower right')
     plt.show()
+    if save_figs == True:
+        fig3.savefig(fpath_out+fname_out_ang)

@@ -76,9 +76,16 @@ def FracOrientation(path_in):
                 bool_NoGrowth = np.equal(angle_end_prev_step, angles_end)
                 angle_end_prev_step = angles_end
                 angles_end = np.where(bool_NoGrowth == True, np.nan, angles_end)     
-            else:
-                raise Exception('ERROR, NUMBERS OF FRACURTES BETWEEN STEPS HAVE TO MATCH!')
-                #angles_end = 
+            elif len(angles_end) < len(seg_angles_all[cnt-1]):
+                #raise Exception('ERROR, NUMBERS OF FRACURTES BETWEEN STEPS HAVE TO MATCH!')
+                bool_NoGrowth = np.equal(angle_end_prev_step[0:len(angles_end)], angles_end)
+                angle_end_prev_step = angles_end
+                angles_end = np.where(bool_NoGrowth == True, np.nan, angles_end) 
+            elif len(angles_end) > len(seg_angles_all[cnt-1]):
+                bool_NoGrowth = np.equal(angle_end_prev_step, angles_end[0:len(angles_end)])
+                angle_end_prev_step = angles_end
+                angles_end = np.where(bool_NoGrowth == True, np.nan, angles_end)
+                
         seg_angles_all[cnt] = angles_end
         avg_angles_all[cnt] = angles_avg
         cnt += 1

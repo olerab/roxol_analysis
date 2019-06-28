@@ -15,11 +15,13 @@ import errno
 import os
 import os.path
 
-target = 'displacementVectors'
-#target = 'fracNodes'
+#target = 'displacementVectors'
+target = 'fracNodes'
+
+edges = False #write edges to center? (for fracpaq analysis)
 
 files = []
-start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned/extensional/10perc'
+start_dir = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned/isostress'
 pattern   = ".xml"
 
 for dirpath, dirnames, filenames in os.walk(start_dir):
@@ -69,9 +71,10 @@ for name in files:
             
             
         #write edge points to center fracture network
-        #if target == 'fracNodes':
-            #fid.write('%5.2f\t%5.2f\n' % (min_x, min_y))
-            #fid.write('%5.2f\t%5.2f\n' % (max_x, max_y))
+        if target == 'fracNodes':
+            if edges == True:
+                fid.write('%5.2f\t%5.2f\n' % (min_x, min_y))
+                fid.write('%5.2f\t%5.2f\n' % (max_x, max_y))
         
         fid = fid.close()
     
