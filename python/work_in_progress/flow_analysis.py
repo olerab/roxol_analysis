@@ -16,8 +16,28 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 
+def flow_orientation_tensor(volFlowx, volFlowy):
+    """ calculate orientation tensor for flow
+        build tensor product of all 2D flow vectors, then calculate eigenvalues & vector
+    """
+    a11 = np.abs(volFlowx * volFlowx)
+    a22 = np.abs(volFlowy * volFlowy)
+    a12 = np.abs(volFlowx * volFlowy)
+    Tensor = np.empty([2, 2])
+    
+    for i in range (0,len(a11)):
+        T = np.array([[a11[i], a12[i]],[a12[i], a22[i]]])
+        Tensor = Tensor + np.linalg.norm(T)
+        
+        Tensor = Tensor/len(a11+1)
+        
+        eigvalue,eigvector=np.linalg.eig(Tensor)
+        
+        idx = eigvalue.argsort()[::-1]
+        return eigvalue[idx],eigvector[:,idx]
+    
 
-def flow_analysis(fpath_in,flow_max = 0.01, flow_min = -0.01, nstep, calcmode = 'nodes'):
+def flow_analysis(fpath_in,flow_max, flow_min, nstep, calcmode):
 # =============================================================================
 # Input parameters
 #   fpath_in: path to roxol result xml files
@@ -40,8 +60,6 @@ def flow_analysis(fpath_in,flow_max = 0.01, flow_min = -0.01, nstep, calcmode = 
     files = glob.glob(fpath)
     
     flowsteps = int(np.floor(len(files)/nstep))
-    
-    calcmode = 'nodes'
     
     cnt = 0
     outflow = np.zeros(flowsteps+1)
@@ -91,7 +109,7 @@ def flow_analysis(fpath_in,flow_max = 0.01, flow_min = -0.01, nstep, calcmode = 
                 outflow_y[i] = np.nansum(volFlowLen[md_ybound_0]) + np.nansum(volFlowLen[md_ybound_1])
                 outflow[i] = np.nansum(volFlowLen[md_xbound_0]) + np.nansum(volFlowLen[md_xbound_1]) + np.nansum(volFlowLen[md_ybound_0]) + np.nansum(volFlowLen[md_ybound_1]) 
                 
-                
+                #eigval, eigvec = flow_orientation_tensor(volFlowx, volFlowy)
     
             
             # same flor elements, but picking only fractures. we do this assuming the matrix is impermeable and only fractures contribute
@@ -118,31 +136,15 @@ def flow_analysis(fpath_in,flow_max = 0.01, flow_min = -0.01, nstep, calcmode = 
                 
                 volFlowLen = np.sqrt(volFlowx ** 2 + volFlowy ** 2)
                 volFlowDir = np.arctan2(volFlowy, volFlowx) * 180 / np.pi
+                
+
             
-            #plt.hist(volFlowDir)
+            plt.hist(volFlowDir)
             plt.plot(volFlowLen[md_ybound_0])
             plt.plot(volFlowLen[md_ybound_1])
             plt.plot(volFlowLen[md_xbound_0])
             plt.plot(volFlowLen[md_xbound_1])
             
-            
-            # TO DO ------
-            # extract x and y values from prop variable and create arrays at each calculation step
-            # calculate the flow magnitude as sqrt(flowx**2 + flowy**2) and double-check values with paraview
-            # create an x/y variable at each calculation step, check values, and create an average for the flow anistropy at each stage
-            # does this already suffice to relate to fracture network geometry? --> if yes, this could already be enough.
-            # is the flow itself already an indicator of the drainage onset? If so, do we need to calculate the volume?
-            #
-            # do the same per element, but only for elements with fracture material ID 
-            #
-            # MORE PRECISE STUFF
-            # find indices of nodes along the boundary between model and boundary domain (check roxol for coordinates)
-            # do this for all sides indivdually, and extract the volume flow values
-            # sum up the volume flow across each boundary to get the fluid volume across this section for each calculation step. can we idendify the drainage stage?
-            # check if the is some anisotropy here as well --> devide volume that has flown through upper and lower boundary by total volume through all sides --> gives percentage of drainage in the vertial direction
-            # check if there is x/y anisotropy along the sides as well.
-            # 
-            # IF THINGS WORK AND MAKE SENSE: COMPARE x/y anisotropy for the entire model to drained volume anisotropy. It is very possible that they do not show the same trend.
             
             cnt += 1
            

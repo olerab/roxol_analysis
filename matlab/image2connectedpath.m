@@ -13,7 +13,7 @@ clear all;
 close all;
 
 % specify path names
-path_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/15deg_aligned/extensional/5perc/animations/simple_network/';
+path_in = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/15deg_aligned/extensional/10perc/animations/simple_network/';
 pathnames = dir([path_in 'FN_*.png']);
 path_out = '/Volumes/PVPLAB2/OLE/roxol/RESULTS/plots/plot_data/longest_connected_path/';
 filename_out = [path_out '15deg_aligned_extensional_20perc.txt'];
@@ -39,18 +39,22 @@ for i = startidx:length(pathnames)
     % turn image into binary and plot result
     BW = im2bw(image,0.5);
     BW = imcomplement(BW);
-
+    
+    BW_longest = BW;
     % find connected components
     CC = bwconncomp(BW);
     numPixels = cellfun(@numel,CC.PixelIdxList);
     [longest_con_fracpath(i-startidx+1),idx] = max(numPixels);
     all_fracs(i-startidx+1) = sum(numPixels(:));
-    %BW(CC.PixelIdxList{idx}) = 0;
+    BW_longest(CC.PixelIdxList{idx}) = 0;
     
 end
 
 figure()
 imshow(BW)
+
+figure()
+imshow(BW_longest)
 % convert longest connected fracture path form pixels to meters
 longest_con_fracpath_meters = longest_con_fracpath./pxl_per_meter;
 all_fracs_meters = all_fracs./pxl_per_meter;
