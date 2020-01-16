@@ -7,7 +7,6 @@ import errno
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def PolyArea(x,y):
     return 0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1)))
 
@@ -82,8 +81,7 @@ def FracArea(fpath_in_fracNodes, fpath_in_dispVec, plotting = False, norm_by_len
         polyNodes = {}
         polyarea = list()
      
-        #extract pairwise displacement vectors
-    
+        #extract pairwise displacement vectors    
         for j in range(0,len(fracNodes)):
             disp1 = np.empty_like(fracNodes[j])
             disp2 = np.empty_like(fracNodes[j])
@@ -97,12 +95,12 @@ def FracArea(fpath_in_fracNodes, fpath_in_dispVec, plotting = False, norm_by_len
             polyNodesx = np.append(polyNodes[j][0:len(fracNodes[j]):2], polyNodes[j][len(fracNodes[j])+1::2])
             polyNodesy = np.append(polyNodes[j][1:len(fracNodes[j]):2], polyNodes[j][len(fracNodes[j])::2])
             
-            # calculate polunomial area, normalizeby the length (if desired)
+            # calculate polynomial area, normalizeby the length (if desired)
             polyarea.append(PolyArea(polyNodesx,polyNodesy))
             
             # plot polygons
             # if you need...
-            #plt.plot(polyNodesx,polyNodesy)
+            # plt.plot(polyNodesx,polyNodesy)
         
         #plt.show()
         
@@ -156,17 +154,3 @@ def FracArea(fpath_in_fracNodes, fpath_in_dispVec, plotting = False, norm_by_len
     
     # return fracture area value
     return frac_area, frac_length
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

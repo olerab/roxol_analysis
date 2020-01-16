@@ -31,8 +31,6 @@ def SegmentAngle(node1,node2):
     return seg_ang
 
 
-
-
 def FracOrientation(path_in):
     seg_angles_all = {}
     avg_angles_all = {}
@@ -120,31 +118,4 @@ def FracOrientation(path_in):
     axs.set_ylim([0, 90])
     #ax.set_title('Vert. symmetric')
         
-
-    # ------------------ simple analysis
-    #paths = ['/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned/isostress/',
-    #         '/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned/extensional/10perc/',
-    #         '/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned/compressional/10perc/',
-    #         '/Volumes/PVPLAB2/OLE/roxol/RESULTS/15deg_aligned/unconfined/']
-    
-    #plt.figure(figsize=[20,20])
-    #for path in paths:
-    #    fname = path + 'crackPropagationData.csv'
-    #    df=pd.read_csv(fname, sep=',',header=1)
-    #    maxCrackID = list()
-    
-        
-    #    plt.subplot(3,1,1)
-    #    plt.ylabel('Total length (m)')
-    #    plt.plot(df.values[:,-5])
-    #    plt.legend(paths)
-    #    plt.subplot(3,1,2)
-    #    plt.ylabel('Average Angle of prop. crack elements (deg)')
-    #    plt.plot(df.values[:,-1])
-    #    plt.legend(paths)
-    #    plt.subplot(3,1,3)
-    #    plt.plot(df.values[:,-7])
-    #    plt.ylabel('Number of propagated crack ends')
-    #    plt.xlabel('Calculation Step')
-    #    plt.legend(paths)
     return avg_err_seg

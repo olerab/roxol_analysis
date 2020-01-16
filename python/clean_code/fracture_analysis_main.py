@@ -51,6 +51,7 @@ def main():
     flow_max = 1 # upper cutoff for volume flow, e.g. to exclude numerical artefactcs
     flow_min = -1 # lower cutoff for volume flow, e.g. to exclude numerical artefactcs (+/- is directional indicator for x and y components)
     nstep=7 # number of calculation steps between two flow steps in roxol
+    # CAREFUL! UNSURE IF THIS WORKS IF SOME STEPS DONT SHOW CHANGES, i.e. NO NEW RESUT FIELD IS WRITTEN!
     calcmode = 'nodes' # use node results for calculation. alternative: 'elements', but not properly implemented yet (Jan 2020)
     
     # ----------------------------------------------------------------------------------
@@ -75,13 +76,13 @@ def main():
         if calc_area == True:
             frac_area[cnt], frac_length[cnt] = FracArea(fpath_in_fracNodes, fpath_in_dispVec, plotting = False, norm_by_len = False)
         
-        #Prpagated Fracture Segment Angles per step
+        #Propagated Fracture Segment Angles per step
         if calc_angles == True:
             segment_angle_data[cnt] = FracOrientation(fpath)
         
         if calc_flow == True:
             volFlow_out[cnt], volFlow_out_x[cnt], volFlow_out_y[cnt] = flow_analysis(fpath, flow_max, flow_min, nstep, calcmode)
-    
+            # CAREFUL! UNSURE IF THIS WORKS IF SOME STEPS DONT SHOW CHANGES, i.e. NO NEW RESUT FIELD IS WRITTEN!
         cnt += 1
     return frac_area, frac_length, segment_angle_data, volFlow_out, volFlow_out_x, volFlow_out_y
 
