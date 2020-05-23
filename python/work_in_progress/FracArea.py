@@ -30,8 +30,8 @@ def FracArea(fpath_in_fracNodes, fpath_in_dispVec, plotting = False, norm_by_len
     
     @author: olerab
     """   
-    files_fracNodes = glob.glob(fpath_in_fracNodes)
-    files_dispVec = glob.glob(fpath_in_dispVec)
+    files_fracNodes = sorted(glob.glob(fpath_in_fracNodes))
+    files_dispVec = sorted(glob.glob(fpath_in_dispVec))
     
     if len(files_fracNodes)!=len(files_dispVec):
         raise Exception('Error, need same number of files containing "fracNodes" and "displacementVectors"')

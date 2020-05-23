@@ -3,6 +3,8 @@
 """
 Created on Tue May 14 10:37:43 2019
 
+NOTE: INPUT RESULT FILES MUST BE NUMBERED USING FORMAT name_number.xml
+
 @author: olerab
 """
 
@@ -38,10 +40,12 @@ def FracOrientation(path_in):
     avg_angles_all = {}
     cnt = 0
     
-    names = glob.glob(path_in + '*.xml')
-    # for every result file, read the fracture node array from result filess, 
+    filenames = glob.glob(path_in + '*.xml')
+    # for every result file, read the fracture node array from result files, 
     # and calculate the angle of the (1) last segment added on each side and (2) average segment angle
-    for name in names:
+
+    
+    for name in sorted(filenames):
         tree = ET.parse(name)
         root = tree.getroot() #creates the element tree from xml file
     
@@ -99,13 +103,12 @@ def FracOrientation(path_in):
     # calculate average angles in values > zero (i.e. fracture dip)
     
     abs_seg_angles_all = {}
-    avg_err_seg = np.empty([len(seg_angles_all),3])
+    avg_err_seg = np.empty([len(seg_angles_all),7])
     avg_err_all = np.empty([len(seg_angles_all),1])
     for p in range (0, len(avg_err_seg)):
         abs_seg_angles_all[p] = np.abs(seg_angles_all[p])
         abs_avg_angles_all = np.abs(avg_angles_all[p])
-
-        avg_err_seg[p,:] = [np.nanmean(abs_seg_angles_all[p]), np.nanstd(abs_seg_angles_all[p]), np.nanmedian(abs_seg_angles_all[p])]
+        avg_err_seg[p,:] = [np.nanmean(abs_seg_angles_all[p]), np.nanstd(abs_seg_angles_all[p]),np.nanquantile(abs_seg_angles_all[p],.05),np.nanquantile(abs_seg_angles_all[p],.25),np.nanquantile(abs_seg_angles_all[p], .50), np.nanquantile(abs_seg_angles_all[p], .75), np.nanquantile(abs_seg_angles_all[p], .95)]
         avg_err_all[p] = np.nanmean(abs_avg_angles_all)
     
     #prepare boxplot data 
